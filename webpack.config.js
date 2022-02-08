@@ -9,8 +9,8 @@ function p(path) {
 }
 
 module.exports = {
-    // mode: 'development', // 设置 webpack 的编译模式
-    mode: 'production',
+    mode: 'development', // 设置 webpack 的编译模式
+    // mode: 'production',
 
     devtool: 'inline-source-map', // 此选项控制是否生成，以及如何生成 source map。https://www.webpackjs.com/configuration/devtool/
 
@@ -57,6 +57,13 @@ module.exports = {
                     'sass-loader'
                 ],
             },
+            {
+                test: /\.(eot|ttf|woff2?)/i,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'assets/font/[contenthash][ext]',
+                },
+            }
         ]
     },
 

@@ -18,6 +18,7 @@ import txt from './assets/other/test.txt'
 const oDiv = document.createElement('div')
 oDiv.style.cssText = 'height:100px;width:100px;background-color:aliceblue'
 oDiv.textContent = txt
+oDiv.classList.add('add-bg')
 document.body.append(oDiv)
 
 import imgsrc3 from './assets/img/bg.jpg'
@@ -29,3 +30,9 @@ document.body.append(oImg3)
 // 打包 css 相关测试
 import './css/main.css'
 import './css/main.scss'
+
+// 打包字体测试
+const oSpan = document.createElement('span')
+oSpan.innerHTML = '&#xe644;'
+oSpan.classList.add('icon')
+document.body.append(oSpan)
