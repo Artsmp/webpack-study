@@ -2,6 +2,9 @@ const { resolve } = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const toml = require('toml');
+const yaml = require('yamljs');
+const json5 = require('json5');
 
 // 将路径处理成绝对路径
 function p(path) {
@@ -63,7 +66,36 @@ module.exports = {
                 generator: {
                     filename: 'assets/font/[contenthash][ext]',
                 },
-            }
+            },
+            {
+                test: /\.(csv|tsv)$/i,
+                use: 'csv-loader'
+            },
+            {
+                test: /\.xml$/i,
+                use: 'xml-loader'
+            },
+            {
+                test: /\.toml$/i,
+                type: 'json',
+                parser: {
+                    parse: toml.parse,
+                },
+            },
+            {
+                test: /\.yaml$/i,
+                type: 'json',
+                parser: {
+                    parse: yaml.parse,
+                },
+            },
+            {
+                test: /\.json5$/i,
+                type: 'json',
+                parser: {
+                    parse: json5.parse,
+                },
+            },
         ]
     },
 

@@ -36,3 +36,18 @@ const oSpan = document.createElement('span')
 oSpan.innerHTML = '&#xe644;'
 oSpan.classList.add('icon')
 document.body.append(oSpan)
+
+// 加载 csv|tsv|xml 格式文件
+import data1 from './assets/other/data.csv'
+import data2 from './assets/other/data.xml'
+console.log(data1)
+console.log(data2)
+
+// 加载 toml、yaml、json5 格式文件
+import toml from './assets/other/data.toml'
+import yaml from './assets/other/data.yaml'
+import json5 from './assets/other/data.json5'
+
+console.log(toml)
+console.log(yaml)
+console.log(json5)

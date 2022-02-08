@@ -21,9 +21,22 @@
 
 ## [loader](https://webpack.docschina.org/concepts/loaders/)
 
-### loader 打包 css|scss
+### loader 加载 css|scss
 
 1. 安装：`npm i -D css-loader scss-loader sass mini-css-extract-plugin css-minimizer-webpack-plugin`
 
 > - mini-css-extract-plugin：用来抽离 css 为一个单独文件
 > - css-minimizer-webpack-plugin：用来对 css 进行压缩
+
+### 加载字体文件
+
+使用内置的资源模块即可
+
+### 加载 csv、tsv、xml 类型文件
+
+1. 安装：`npm i -D xml-loader csv-loader`
+
+### 自定义 json 模块 parser
+
+1. 通过使用自定义 parser 替代特定的 webpack loader，可以将任何 toml、yaml、json5 文件作为 json 模块导入
+2. 安装：`npm i -D toml yamljs json5`
