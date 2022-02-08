@@ -1,6 +1,7 @@
 import sayHello from './assets/js/hello'
 sayHello()
 
+// 资源模块类型相关测试
 import imgsrc from './assets/img/dp.png'
 const oImg = document.createElement('img')
 oImg.style.cssText = 'width:80px;height:80px'
@@ -24,3 +25,7 @@ const oImg3 = document.createElement('img')
 oImg3.style.cssText = 'height:80px'
 oImg3.src = imgsrc3
 document.body.append(oImg3)
+
+// 打包 css 相关测试
+import './css/main.css'
+import './css/main.scss'

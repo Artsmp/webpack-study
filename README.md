@@ -18,3 +18,12 @@
 - asset 在导出一个 data URI 和发送一个单独的文件之间自动选择。之前通过使用 url-loader，并且配置资源体积限制实现。
     - 也就是在 asset/resource 和 asset/inline 之间选择
     - 默认情况下 大于 8kb 会使用 asset/resource，小于则使用 asset/inline 
+
+## [loader](https://webpack.docschina.org/concepts/loaders/)
+
+### loader 打包 css|scss
+
+1. 安装：`npm i -D css-loader scss-loader sass mini-css-extract-plugin css-minimizer-webpack-plugin`
+
+> - mini-css-extract-plugin：用来抽离 css 为一个单独文件
+> - css-minimizer-webpack-plugin：用来对 css 进行压缩

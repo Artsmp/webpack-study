@@ -1,5 +1,7 @@
 const { resolve } = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 // 将路径处理成绝对路径
 function p(path) {
@@ -7,7 +9,8 @@ function p(path) {
 }
 
 module.exports = {
-    mode: 'development', // 设置 webpack 的编译模式
+    // mode: 'development', // 设置 webpack 的编译模式
+    mode: 'production',
 
     devtool: 'inline-source-map', // 此选项控制是否生成，以及如何生成 source map。https://www.webpackjs.com/configuration/devtool/
 
@@ -45,7 +48,15 @@ module.exports = {
                         maxSize: 8 * 1024
                     }
                 }
-            }
+            },
+            {
+                test: /\.(css|scss)$/i,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'sass-loader'
+                ],
+            },
         ]
     },
 
@@ -55,11 +66,20 @@ module.exports = {
             template: './index.html', // 打包时使用的模板文件
             filename: 'index.html', // 指定打包后的文件名
             inject: 'body', // 让生成的 script 标签插入在 body 中
+        }),
+        new MiniCssExtractPlugin({
+            filename: 'css/[contenthash].css'
         })
     ],
 
     devServer: {
         static: './dist',
         open: true
-    }
+    },
+
+    optimization: {
+        minimizer: [
+            new CssMinimizerPlugin()
+        ],
+    },
 }
