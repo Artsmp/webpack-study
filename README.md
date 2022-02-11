@@ -40,3 +40,55 @@
 
 1. 通过使用自定义 parser 替代特定的 webpack loader，可以将任何 toml、yaml、json5 文件作为 json 模块导入
 2. 安装：`npm i -D toml yamljs json5`
+
+## babel 转义 js
+
+- 安装：`npm i -D @babel/core @babel/preset-env babel-loader`
+    - @babel/core：babel 核心模块
+    - @babel/preset-env：babel 预设，一组 babel 插件的合集
+- 配置：
+```js
+rules: [
+    {
+        test: /\.js$/i,
+        exclude: /node_modules/,
+        use: {
+            loader: 'babel-loader',
+            options: {
+                presets: ['@babel/preset-env']
+            }
+        }
+    }
+]
+```
+- 以上步骤会报错：regeneratorRuntime is not defined。 
+- 所以需安装：`npm i -D @babel/runtime @babel/plugin-transform-runtime`
+- 配置：
+```js
+rules: [
+    {
+        test: /\.js$/i,
+        exclude: /node_modules/,
+        use: {
+            loader: 'babel-loader',
+            options: {
+                presets: ['@babel/preset-env'],
+                plugins: [
+                    [
+                        '@babel/plugin-transform-runtime'
+                    ]
+                ]
+            }
+        }
+    }
+]
+```
+
+## 代码分离
+此特性能把代码分离到不同的 bundle 中，然后可以按需加载或者并行加载这些文件。代码分离可以带来更小的 bundle，以及控制资源加载的优先级，如果进行合理的使用，会极大提升页面的性能。常用的代码分离的方式有三种：
+- 入口起点：使用 entry 配置，手动的分离代码
+- 防止重复：使用 Entry dependencies 或者 SplitChunksPlugin 去重和分离 chunk
+- 动态导入：通过模块的内联函数调用来分离代码
+
+### 入口起点
+
