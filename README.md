@@ -163,3 +163,20 @@ optimization: {
 - 将第三方库提取到单独的文件中使用浏览器的强效缓存
 - 将自己写的代码通过 webpack 的 contenthash 来根据内容生成hash文件名，以让服务端代码更新时，浏览器的强缓存失效。
 
+## 区分环境
+在很多情况下，我们需要区分开发环境和生产环境配置。
+
+### 公共路径
+
+publicPath：通过它指定所有资源的基础路径。
+
+#### 环境变量
+
+webpack 命令行环境配置的 `--env` 参数，可以允许你传入任意数量的环境变量。而在 `webpack.config.js` 中可以访问到这些环境变量。例如，--env production 或 --env goal=local。
+
+`npx webpack --env production`：当将配置写成导出一个函数，函数返回的对象就是一个配置，这个函数接收一个变量 env，env中就存放着在命令行中输入的内容。
+
+`npm install terser-webpack-plugin --save-dev`：使用这个对 js 代码进行压缩。
+
+
+
