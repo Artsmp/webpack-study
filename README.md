@@ -91,4 +91,75 @@ rules: [
 - 动态导入：通过模块的内联函数调用来分离代码
 
 ### 入口起点
+配置多入口模式：
+```js
+entry: {
+    index: './src/index.js',
+    another: './src/another-module.js',
+},
+
+output: {
+    filename: '[name].bundle.js', // 输出的文件名
+    path: p('dist'), // 打包后的输出文件
+    clean: true, // 每次执行打包前清理输出的目录
+    assetModuleFilename: 'images/[contenthash][ext]', // 为所有资源模块指定输出的目录和文件名
+},
+```
+会发现如果不同入口文件引入相同依赖，那这个依赖将会被分别打包到各个入口文件中，造成 bundle 过大且重复引用相同依赖的问题。
+
+#### 如何防止重复？
+配置如下，这样就可以在多个 chunk 之间共享模块。依赖被打包到了一个单独的文件中
+```js
+entry: {
+    index: {
+        import: './src/index.js',
+        dependOn: 'shared',
+    },
+    another: {
+        import: './src/another-module.js',
+        dependOn: 'shared',
+    },
+    shared: 'lodash'
+},
+
+output: {
+    filename: '[name].bundle.js', // 输出的文件名
+    path: p('dist'), // 打包后的输出文件
+    clean: true, // 每次执行打包前清理输出的目录
+    assetModuleFilename: 'images/[contenthash][ext]', // 为所有资源模块指定输出的目录和文件名
+},
+```
+
+### SplitChunksPlugin
+它可以将公共的依赖模块提取到已有的入口 chunk 中，或者提取到一个新生的 chunk。
+
+```js
+optimization: {
+    splitChunks: {
+        chunks: 'all'
+    }
+}
+```
+
+### 动态导入
+- 使用 esm 提供的 `import()` 来实现动态导入。
+- 使用 webpack 特定的 `webpack.ensure`。
+
+#### 预获取/预加载模块(prefetch/preload module)
+
+- prefetch(预获取)：将来某些导航下可能需要的资源
+- preload(预加载)：当前导航下可能需要资源
+
+添加这个魔法注释后：`webpackPrefetch: true`：在头部可以看到 link:prefetch 字样。然后当点击按钮import该文件时，会发现状态码是304，也就是他已经被提前加载了。
+
+与prefetch 指令相比，preload 指令有许多不同之处：
+- preload chunk 会在父 chunk 加载时，以并行方式开始加载。prefetch chunk 会在父 chunk 加载结束后开始加载。
+- preload chunk 具有中等优先级，并立即下载。prefetch chunk 在浏览器闲置时下载。
+- preload chunk 会在父 chunk 中立即请求，用于当下时刻。prefetch chunk 会用于未来的某个时刻。
+- 浏览器支持程度不同。
+
+### 缓存技术
+浏览器的一种机制：这里的缓存主要指本地缓存（强缓存）
+- 将第三方库提取到单独的文件中使用浏览器的强效缓存
+- 将自己写的代码通过 webpack 的 contenthash 来根据内容生成hash文件名，以让服务端代码更新时，浏览器的强缓存失效。
 

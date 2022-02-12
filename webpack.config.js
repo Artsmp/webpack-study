@@ -17,10 +17,25 @@ module.exports = {
 
     devtool: 'inline-source-map', // 此选项控制是否生成，以及如何生成 source map。https://www.webpackjs.com/configuration/devtool/
 
-    entry: './src/index.js',
+    entry: {
+        index: './src/index.js',
+        // another: './src/another-module.js',
+    },
+
+    // entry: {
+    //     index: {
+    //         import: './src/index.js',
+    //         dependOn: 'shared',
+    //     },
+    //     another: {
+    //         import: './src/another-module.js',
+    //         dependOn: 'shared',
+    //     },
+    //     shared: 'lodash'
+    // },
 
     output: {
-        filename: 'bundle.js', // 输出的文件名
+        filename: 'scripts/[name].[contenthash].js', // 输出的文件名
         path: p('dist'), // 打包后的输出文件
         clean: true, // 每次执行打包前清理输出的目录
         assetModuleFilename: 'images/[contenthash][ext]', // 为所有资源模块指定输出的目录和文件名
@@ -135,5 +150,14 @@ module.exports = {
         minimizer: [
             new CssMinimizerPlugin()
         ],
+        splitChunks: { // 依赖分割
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
     },
 }
